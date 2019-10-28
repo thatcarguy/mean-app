@@ -46,12 +46,12 @@ export class PostCreateComponent implements OnInit {
             id: postData._id,
             title: postData.title,
             content: postData.content,
-            imagePath: null
+            imagePath: postData.imagePath
           };
           this.form.setValue({
             title: this.post.title,
-            content:this.post.content
-
+            content: this.post.content,
+            image: this.post.imagePath
           });
         });
 
@@ -69,7 +69,7 @@ export class PostCreateComponent implements OnInit {
     if (this.mode === 'create') {
       this.postService.addPost(postForm.title, postForm.content, postForm.image);
     } else {
-      this.postService.updatePost(this.postId, postForm.title, postForm.content);
+      this.postService.updatePost(this.postId, postForm.title, postForm.content, this.form.value.image);
     }
     this.form.reset();
   }
