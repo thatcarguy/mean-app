@@ -61,7 +61,7 @@ export class PostCreateComponent implements OnInit {
     }
     this.isLoading = true;
     if (this.mode === 'create') {
-      this.postService.addPost(postForm.title, postForm.content);
+      this.postService.addPost(postForm.title, postForm.content, postForm.image);
     } else {
       this.postService.updatePost(this.postId, postForm.title, postForm.content);
     }

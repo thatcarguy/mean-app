@@ -38,11 +38,15 @@ export class PostsService {
  getPost(id: string) {
    return this.http.get<{_id:string, title:string, content:string}>(this.url + '/' + id);
  }
- addPost(title: string, content: string) {
-   const post: Post = {id: null, title: title, content: content};
+ addPost(title: string, content: string, image: File) {
+   const postData = new FormData();
+   postData.append('title', title);
+   postData.append('content', content);
+   postData.append('image', image, title);
 
-   this.http.post<{message: string, postId:any}>(this.url, post)
+   this.http.post<{message: string, postId:any}>(this.url, postData)
     .subscribe((responseData) => {
+      const post: Post = {id: responseData.postId, title: title, content: content}
       console.log(responseData.message);
       const id = responseData.postId;
       post.id = id;

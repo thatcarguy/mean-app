@@ -1,11 +1,36 @@
 const express = require('express');
+const multer = require('multer');
 
 const Post = require('../models/post');
 
 const router = express.Router();
 
+const MIME_TYPE_MAP = {
+  'image/png':'png',
+  'image/jpeg':'jpeg',
+  'image/jpg':'jpg'
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error('Invalid Mime type');
+    if(isValid){
+      error = null;
+    }
+    //path is relative to the server.js file
+    callback(error, "backend/images");
+  },
+  filename: (req, file, callback) =>{
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    callback(null, name+'-'+ Date.now()+'.'+ext);
+  }
+})
+
 //removed path because it's already filtered in app.js
-router.post("",(req,res,next)=>{
+//passing multer as function with storage as argument and saying it expects single image from the body request.
+router.post("",multer({storage:storage}).single("image"),(req,res,next)=>{
   const post = new Post({
     title: req.body.title,
     content: req.body.content
