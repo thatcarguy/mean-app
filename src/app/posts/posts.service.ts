@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class PostsService {
  url = 'http://localhost:3000/api/posts';
  private posts: Post[] = [];
- private postsUpdated = new Subject<Post[]>();
+ private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
  constructor(private http: HttpClient, private router: Router) {}
 
  // When copying array we need to use spread object.
@@ -18,21 +18,24 @@ export class PostsService {
  getPosts(postsPerPage: number, currentPage: number) {
    // Creating query url with dynamic string with backticks. allows us to add data dynamically.
    const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
-  this.http.get<{message: string, posts: any}>(this.url + queryParams)
+  this.http.get<{message: string, posts: any, maxPosts: number}>(this.url + queryParams)
   .pipe(map((postData) => {
-    return postData.posts.map(post => {
+    return { posts: postData.posts.map(post => {
       return {
         title: post.title,
         content: post.content,
         id: post._id,
         imagePath: post.imagePath
       };
-    });
+    }), maxPosts: postData.maxPosts};
   }))
   .subscribe(transformedPosts => {
     console.log(transformedPosts);
-    this.posts = transformedPosts;
-    this.postsUpdated.next([...this.posts]);
+    this.posts = transformedPosts.posts;
+    this.postsUpdated.next({
+      posts: [...this.posts],
+      postCount: transformedPosts.maxPosts
+    });
   });
  }
  getPostUpdateListener() {
@@ -49,17 +52,6 @@ export class PostsService {
 
    this.http.post<{message: string, post: Post}>(this.url, postData)
     .subscribe((responseData) => {
-      const post: Post = {
-        id: responseData.post.id,
-        title: title,
-        content: content,
-        imagePath: responseData.post.imagePath
-      };
-      console.log(responseData.message);
-      const id = responseData.post.id;
-      post.id = id;
-      this.posts.push(post);
-      this.postsUpdated.next([...this.posts]);
       this.router.navigate(["/"]);
     });
  }
@@ -82,27 +74,10 @@ export class PostsService {
    }
    this.http.put(this.url + '/' + id, postData)
     .subscribe(response => {
-      const updatedPosts = [...this.posts];
-      const oldPostIndex =  updatedPosts.findIndex(p => p.id === id);
-      const post: Post = {
-        id: id,
-        title: title,
-        content: content,
-        imagePath: ""
-      };
-      updatedPosts[oldPostIndex] = post;
-      this.posts = updatedPosts;
-      this.postsUpdated.next([...this.posts]);
       this.router.navigate(["/"]);
     });
  }
  deletePost(id: string) {
-   this.http.delete(this.url + '/' + id)
-    .subscribe(() => {
-      // sending the angular app the updated list after deletion
-      const updatedPosts = this.posts.filter(post => post.id !== id );
-      this.posts = updatedPosts;
-      this.postsUpdated.next([...this.posts]);
-    });
+  return this.http.delete(this.url + '/' + id);
  }
 }
