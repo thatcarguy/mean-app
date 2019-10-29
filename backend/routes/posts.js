@@ -72,7 +72,17 @@ router.put("/:id",
 });
 
 router.get("", (req, res, next) => {
-  Post.find()
+  //query params come as string so add plus so they convert to numbers
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = Post.find();
+  //skip skips 10 * currentPage -1, limit pulls only 10
+  if(pageSize && currentPage){
+    postQuery
+      .skip(pageSize*(currentPage-1))
+      .limit(pageSize);
+  }
+  postQuery
     .then(documents =>{
       res.status(200).json({
         message:'Posts fetched successfully',

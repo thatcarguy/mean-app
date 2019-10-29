@@ -15,8 +15,10 @@ export class PostsService {
 
  // When copying array we need to use spread object.
  // Java script copies by reference so we wouldve just got the pointer to this.posts.
- getPosts() {
-  this.http.get<{message: string, posts: any}>(this.url)
+ getPosts(postsPerPage: number, currentPage: number) {
+   // Creating query url with dynamic string with backticks. allows us to add data dynamically.
+   const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
+  this.http.get<{message: string, posts: any}>(this.url + queryParams)
   .pipe(map((postData) => {
     return postData.posts.map(post => {
       return {
