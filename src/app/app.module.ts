@@ -12,6 +12,7 @@ import { PostListComponent } from './posts/post-list/post-list.component';
 import { PostsService } from './posts/posts.service';
 import { HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app.routing.module';
+import { LoginComponent } from './auth/login/login.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AppRoutingModule } from './app.routing.module';
     PostsComponent,
     PostCreateComponent,
     HeaderComponent,
-    PostListComponent
+    PostListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
