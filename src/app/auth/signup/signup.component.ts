@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { AuthService } from "../auth.service";
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +12,7 @@ export class SignUpComponent implements OnInit {
   isLoading = false;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, public authService: AuthService) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -22,6 +23,7 @@ export class SignUpComponent implements OnInit {
 
   onSignup(form: any){
     console.log(form);
+    this.authService.createUser(form.email, form.password);
   }
 
 }
