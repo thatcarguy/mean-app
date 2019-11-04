@@ -10,11 +10,12 @@ import {MatInputModule, MatCardModule, MatButtonModule, MatToolbarModule, MatExp
 import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { PostsService } from './posts/posts.service';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app.routing.module';
 import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/signup/signup.component';
 import { AuthService } from './auth/auth.service';
+import { AuthInterceptor } from './auth/auth-interceptor';
 
 
 @NgModule({
@@ -43,7 +44,7 @@ import { AuthService } from './auth/auth.service';
     MatPaginatorModule,
     HttpClientModule
   ],
-  providers: [PostsService, AuthService],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, PostsService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

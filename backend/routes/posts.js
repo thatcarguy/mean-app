@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 
 const Post = require('../models/post');
-
+const checkAuth = require('../middleware/check-auth');
 const router = express.Router();
 
 const MIME_TYPE_MAP = {
@@ -30,7 +30,11 @@ const storage = multer.diskStorage({
 
 //removed path because it's already filtered in app.js
 //passing multer as function with storage as argument and saying it expects single image from the body request.
-router.post("",multer({storage:storage}).single("image"),(req,res,next)=>{
+router.post(
+  "",
+  checkAuth,
+  multer({storage:storage}).single("image"),
+  (req,res,next)=>{
   const url = req.protocol + '://' + req.get('host'); // constructs url to server
   const post = new Post({
     title: req.body.title,
@@ -50,7 +54,9 @@ router.post("",multer({storage:storage}).single("image"),(req,res,next)=>{
   });
 });
 
-router.put("/:id",
+router.put(
+  "/:id",
+  checkAuth,
   multer({storage:storage}).single("image"),
   (req,res,next) => {
     let imagePath = req.body.imagePath;
@@ -108,7 +114,10 @@ router.get("/:id", (req,res,next) =>{
   });
 });
 
-router.delete("/:id",(req,res,next)=>{
+router.delete(
+  "/:id",
+  checkAuth,
+  (req,res,next)=>{
   Post.deleteOne({_id: req.params.id}).then(result=>{
     console.log(result);
     res.status(200).json({message: "Post deleted"});
