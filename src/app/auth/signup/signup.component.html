@@ -17,12 +17,13 @@
           formControlName="password">
         <mat-error *ngIf="form.get('password').invalid">Please enter a valid password.</mat-error>
       </mat-form-field>
-      <button
+      <button *ngIf="!isLoading"
         mat-raised-button
         color="accent"
         type="submit"
         [disabled]="!form.valid">
         Sign Up
       </button>
+
     </form>
   </mat-card>
