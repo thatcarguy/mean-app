@@ -67,10 +67,11 @@ export class PostsService {
     postData.append('image',image,title);
    } else {
     postData = {
-      id:id,
-      title:title,
-      content:content,
-      imagePath: image
+      id: id,
+      title: title,
+      content: content,
+      imagePath: image,
+      creator: null
     }
    }
    this.http.put(this.url + '/' + id, postData)
