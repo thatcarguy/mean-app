@@ -33,10 +33,11 @@ export class AuthService {
       email: email,
       password: password
     };
-    this.http.post(this.url + '/signup', authData)
-      .subscribe(response => {
-        console.log(response);
-      });
+    this.http.post(this.url + '/signup', authData).subscribe(() => {
+      this.router.navigate["/"];
+    }, error => {
+      this.authStatusListener.next(false);
+    });
   }
 
   login(email: string, password: string) {
@@ -60,6 +61,8 @@ export class AuthService {
         this.router.navigate(['/']);
       }
 
+    }, error => {
+      this.authStatusListener.next(false);
     });
   }
 
