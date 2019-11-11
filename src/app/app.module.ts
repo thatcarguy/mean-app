@@ -16,6 +16,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/signup/signup.component';
 import { AuthService } from './auth/auth.service';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import { ErrorInterceptor } from './error.interceptor';
 
 
 @NgModule({
@@ -44,7 +45,12 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     MatPaginatorModule,
     HttpClientModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, PostsService, AuthService],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    PostsService,
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
