@@ -52,7 +52,11 @@ router.post(
         imagePath: createdPost.imagePath
       }
     });
-  });
+  }).catch(error => {
+    res.status(500).json({
+      message: 'Post creation failed.'
+    })
+  });;
 });
 
 router.put(
@@ -80,7 +84,11 @@ router.put(
           message: 'Not Authorized'
         });
       }
-    });
+    }).catch(error => {
+      res.status(500).json({
+        message: 'Post update failed.'
+      })
+    });;
 });
 
 router.get("", (req, res, next) => {
@@ -132,7 +140,11 @@ router.delete(
         message: 'Not Authorized'
       });
     }
-  });
+  }).catch(error => {
+    res.status(500).json({
+      message: 'Post delete failed.'
+    })
+  });;
 });
 
 module.exports = router;
