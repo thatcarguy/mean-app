@@ -16,7 +16,6 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
     AngularMaterialModule,
     BrowserModule,
     RouterModule
