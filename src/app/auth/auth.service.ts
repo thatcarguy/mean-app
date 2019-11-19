@@ -34,7 +34,7 @@ export class AuthService {
       password: password
     };
     this.http.post(this.url + '/signup', authData).subscribe(() => {
-      this.router.navigate["/"];
+      this.router.navigate(['/']);
     }, error => {
       this.authStatusListener.next(false);
     });
