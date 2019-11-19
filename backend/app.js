@@ -7,7 +7,7 @@ const postsRoutes = require('./routes/posts');
 const userRoutes = require('./routes/user');
 const app = express();
 
-mongoose.connect('mongodb://dukas:DukasSprouts666!@ds235378.mlab.com:35378/project-express')
+mongoose.connect("mongodb://dukas:"+process.env.MONGO_ATLAS_PW+"@ds235378.mlab.com:35378/project-express")
 .then(()=>{
   console.log('Connected To the Database!');
 })
