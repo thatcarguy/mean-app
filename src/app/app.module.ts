@@ -2,13 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
-import { PostsComponent } from './posts/posts.component';
-import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatInputModule, MatCardModule, MatButtonModule, MatToolbarModule, MatExpansionModule, MatProgressSpinnerModule, MatPaginatorModule, MatDialogModule} from '@angular/material';
 import { HeaderComponent } from './header/header.component';
-import { PostListComponent } from './posts/post-list/post-list.component';
 import { PostsService } from './posts/posts.service';
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app.routing.module';
@@ -18,15 +14,14 @@ import { AuthService } from './auth/auth.service';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error.interceptor';
 import { ErrorComponent } from './error/error.component';
+import { AngularMaterialModule } from './angular-material.module';
+import { PostsModule } from './posts/posts.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostsComponent,
-    PostCreateComponent,
     HeaderComponent,
-    PostListComponent,
     LoginComponent,
     SignUpComponent,
     ErrorComponent
@@ -35,18 +30,12 @@ import { ErrorComponent } from './error/error.component';
     BrowserModule,
     AppRoutingModule,
     CommonModule,
-    ReactiveFormsModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatExpansionModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularMaterialModule,
+    PostsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
