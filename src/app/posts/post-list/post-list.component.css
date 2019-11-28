@@ -10,9 +10,10 @@ mat-spinner {
 }
 .post-image{
   width:100%;
+  overflow: hidden;
 }
-.port-image img {
-  width: 100%;
+.post-image img {
+  max-width: 100%;
 }
 
 mat-paginator {
