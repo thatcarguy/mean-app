@@ -18,7 +18,7 @@ mongoose.connect("mongodb://dukas:"+process.env.MONGO_ATLAS_PW+"@ds235378.mlab.c
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 //granting access to the images folder.
-app.use("/images", express.static(path.join("backend/images")));
+app.use("/images", express.static(path.join("images")));
 
 app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-Origin','*');
