@@ -18,7 +18,8 @@ mongoose.connect("mongodb://dukas:"+process.env.MONGO_ATLAS_PW+"@ds235378.mlab.c
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 //granting access to the images folder.
-app.use("/images", express.static(path.join("images")));
+app.use("/images", express.static(path.join(__dirname,"images")));
+app.use("/", express.static(path.join(__dirname, "angular")));
 
 app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-Origin','*');
@@ -33,5 +34,8 @@ app.use((req,res,next)=>{
 //filtering only when path starts with this
 app.use('/api/posts',postsRoutes)
 app.use('/api/user',userRoutes);
-
+app.use((req,res,next)=>{
+  //this is the absolute path to this folder
+  res.sendFile(path.join(__dirname, "angular","index.html"));
+});
 module.exports = app;
